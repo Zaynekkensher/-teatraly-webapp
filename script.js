@@ -1,20 +1,24 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("event-form");
 
-  Telegram.WebApp.expand();
+window.Telegram.WebApp.ready();
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+flatpickr("#date", {
+  dateFormat: "d.m.Y",
+  locale: "ru",
+  minDate: "today"
+});
 
-    const data = {
-      date: document.getElementById("date").value,
-      time: document.getElementById("time").value,
-      title: document.getElementById("title").value,
-      place: document.getElementById("place").value,
-      comment: document.getElementById("comment").value,
-    };
+flatpickr("#time", {
+  enableTime: true,
+  noCalendar: true,
+  dateFormat: "H:i",
+  time_24hr: true
+});
 
-    Telegram.WebApp.sendData(JSON.stringify(data));
-    Telegram.WebApp.close(); // Закрыть Web App после отправки
-  });
+const form = document.getElementById('event-form');
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  Telegram.WebApp.sendData(JSON.stringify(data));
+  Telegram.WebApp.close();
 });
