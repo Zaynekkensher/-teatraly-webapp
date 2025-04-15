@@ -52,6 +52,9 @@
   </form>
 
   <script>
+    // Инициализация Telegram WebApp
+    window.Telegram.WebApp.ready();
+
     flatpickr("#date", {
       dateFormat: "d.m.Y",
       locale: "ru",
@@ -65,7 +68,6 @@
       time_24hr: true
     });
 
-    // Отправка в Telegram Web App
     const form = document.getElementById('event-form');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
