@@ -2,54 +2,50 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Добавить мероприятие</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
-
   <style>
     body {
       font-family: sans-serif;
       padding: 20px;
-      background: #f8f8f8;
+      background: #f9f9f9;
     }
     input, textarea, button {
-      display: block;
-      margin-bottom: 15px;
-      padding: 8px;
       width: 100%;
-      max-width: 400px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
     }
   </style>
+  <script>
+    function sendData() {
+      const data = {
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        title: document.getElementById('title').value,
+        place: document.getElementById('place').value,
+        comment: document.getElementById('comment').value
+      };
+      Telegram.WebApp.sendData(JSON.stringify(data));
+      Telegram.WebApp.close();
+    }
+  </script>
 </head>
 <body>
-  <h2>Добавить мероприятие</h2>
-  <form id="event-form">
-    <label>Дата:
-      <input type="text" id="date" name="date" required>
-    </label>
-
-    <label>Время:
-      <input type="text" id="time" name="time" required>
-    </label>
-
-    <label>Название:
-      <input type="text" id="title" name="title" required>
-    </label>
-
-    <label>Место проведения:
-      <input type="text" id="place" name="place" required>
-    </label>
-
-    <label>Комментарий:
-      <textarea id="comment" name="comment"></textarea>
-    </label>
-
-    <button type="submit">Отправить</button>
-  </form>
-
-  <script src="script.js"></script>
+  <h2>Добавить мероприятие 🎭</h2>
+  <input id="date" type="text" placeholder="Дата (дд.мм.гггг)" required />
+  <input id="time" type="text" placeholder="Время (чч:мм)" required />
+  <input id="title" type="text" placeholder="Название" required />
+  <input id="place" type="text" placeholder="Место проведения" required />
+  <textarea id="comment" placeholder="Комментарий"></textarea>
+  <button onclick="sendData()">Отправить</button>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
