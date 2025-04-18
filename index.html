@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>Добавить событие</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <!-- Flatpickr стили и скрипты -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
 
@@ -13,52 +14,55 @@
     body {
       font-family: sans-serif;
       padding: 20px;
-      background: #f8f8f8;
+      background: #f5f5f5;
     }
     h2 {
+      font-size: 24px;
       margin-bottom: 20px;
     }
-    label {
-      display: block;
-      margin-bottom: 10px;
-    }
     input, select, textarea, button {
-      display: block;
-      margin-bottom: 15px;
-      padding: 8px;
       width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
+      max-width: 500px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #eee;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <h2>Добавить событие</h2>
+
   <form id="event-form">
     <label>Дата:
-      <input type="text" id="date" name="date" required>
+      <input type="text" id="date" name="date" required />
     </label>
 
     <label>Время:
-      <input type="text" id="time" name="time" required>
+      <input type="text" id="time" name="time" required />
     </label>
 
     <label>Город:
-      <input type="text" name="city" required>
+      <input type="text" name="city" required />
     </label>
 
     <label>Тип события:
-      <select id="type" name="type">
-        <option value="театр">Театр</option>
-        <option value="концерт">Концерт</option>
-        <option value="фестиваль">Фестиваль</option>
-        <option value="кино">Кино</option>
-        <option value="другое">Другое</option>
+      <select name="type" required>
+        <option value="Театр">Театр</option>
+        <option value="Концерт">Концерт</option>
+        <option value="Фестиваль">Фестиваль</option>
+        <option value="Кино">Кино</option>
+        <option value="Другое">Другое</option>
       </select>
     </label>
 
     <label>Место:
-      <input type="text" name="place" required>
+      <input type="text" name="place" required />
     </label>
 
     <label>Описание:
@@ -69,11 +73,15 @@
   </form>
 
   <script>
-    window.Telegram.WebApp.ready();
+    // Telegram Web App init
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+    }
 
+    // Flatpickr инициализация
     flatpickr("#date", {
-      dateFormat: "d.m.Y",
       locale: "ru",
+      dateFormat: "d.m.Y",
       minDate: "today"
     });
 
@@ -84,12 +92,18 @@
       time_24hr: true
     });
 
-    document.getElementById('event-form').addEventListener('submit', function (e) {
+    // Обработка формы
+    const form = document.getElementById("event-form");
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
-      const formData = new FormData(this);
-      const data = Object.fromEntries(formData.entries());
-      Telegram.WebApp.sendData(JSON.stringify(data));
-      Telegram.WebApp.close();
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(JSON.stringify(data));
+        Telegram.WebApp.close();
+      } else {
+        alert("Telegram WebApp не найден");
+      }
     });
   </script>
 </body>
